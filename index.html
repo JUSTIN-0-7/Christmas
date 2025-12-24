@@ -19,15 +19,11 @@
             background: #0d1117; 
             margin: 0;
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            overflow: hidden;
-            transition: background 1.5s ease;
+            overflow-x: hidden;
+            transition: background 0.8s ease;
         }
 
-        /* Festive background after login */
-        body.logged-in {
-            background: radial-gradient(circle, #1a472a 0%, #051a0d 100%);
-        }
-
+        /* Container for the content */
         .container {
             display: flex;
             align-items: center;
@@ -38,13 +34,14 @@
         }
 
         .login-form {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
             padding: 2rem;
             border-radius: 25px;
-            min-width: 320px;
+            width: 90%;
+            max-width: 350px;
             display: none; 
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
             text-align: center;
             color: white;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -64,7 +61,7 @@
         }
         .login-btn:active { transform: scale(0.95); }
 
-        .lamp { height: 40vmin; cursor: pointer; margin-bottom: 20px; }
+        .lamp { height: 35vmin; cursor: pointer; margin-bottom: 20px; }
         .lamp__light { opacity: var(--on); transition: opacity 0.4s; }
         
         /* Snowflakes */
@@ -76,14 +73,26 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Surprise Section */
-        .surprise-content { text-align: center; animation: giftReveal 1.2s ease-out; color: white; padding: 20px; }
-        .wish-title { font-size: 2.2rem; margin-bottom: 10px; color: #fff; text-shadow: 0 0 15px #c41e3a; font-family: 'Georgia', serif; }
-        .quote-text { font-style: italic; font-size: 1.1rem; margin-bottom: 25px; color: #eee; max-width: 500px; line-height: 1.6; margin-left: auto; margin-right: auto; }
-        .surprise-image {
-            max-width: 95%; max-height: 45vh; border: 8px solid white;
-            border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        .surprise-content { 
+            text-align: center; 
+            animation: giftReveal 1.2s ease-out; 
+            color: white; 
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
-        @keyframes giftReveal { 0% { opacity: 0; scale: 0.8; } 100% { opacity: 1; scale: 1; } }
+        .wish-title { font-size: 2rem; margin-bottom: 10px; text-shadow: 0 0 15px #c41e3a; }
+        .quote-text { font-style: italic; font-size: 1.1rem; margin-bottom: 25px; line-height: 1.6; }
+        .signature { display: block; margin-top: 15px; font-weight: bold; color: #ffd700; }
+        
+        .surprise-image {
+            width: 100%; height: auto; border: 6px solid white;
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+        @keyframes giftReveal { 0% { opacity: 0; scale: 0.9; } 100% { opacity: 1; scale: 1; } }
     </style>
 </head>
 <body>
@@ -101,11 +110,11 @@
         </svg>
 
         <div class="login-form" id="login-form">
-            <h2 style="margin-top:0;">Welcome</h2>
+            <h2 style="margin-top:0;">Merry Christmas</h2>
             <div class="form-group">
                 <input type="text" id="username" placeholder="Type your name...">
             </div>
-            <button class="login-btn" onclick="revealGift()">See the Surprise</button>
+            <button class="login-btn" onclick="revealGift()">Open Surprise</button>
         </div>
     </div>
 
@@ -113,10 +122,17 @@
 
     <script>
         let lightOn = false;
+        let colorIndex = 0;
+        const festiveColors = ['#0d1117', '#1a472a', '#c41e3a', '#2b1d52', '#4e0d0d'];
 
         function toggleLight() {
             lightOn = !lightOn;
             const form = document.getElementById('login-form');
+            
+            // Cycle background color
+            colorIndex = (colorIndex + 1) % festiveColors.length;
+            document.body.style.background = festiveColors[colorIndex];
+            
             document.documentElement.style.setProperty('--on', lightOn ? 1 : 0);
             
             // Visual Cord Pull
@@ -131,91 +147,84 @@
             const container = document.getElementById('main-container');
             const music = document.getElementById('bg-music');
             
-            // --- ALL FAMILY DATA ---
             const family = {
                 "gracy": { 
                     wish: "Merry Christmas, Mom!", 
-                    quote: "“A mother’s love is the heart of every Christmas.” Thank you for being my everything and our constant guide.", 
-                    img: "gracy.jpg" 
+                    quote: "“A mother’s love is the heart of every Christmas.” Thank you for being my everything.", 
+                    imgs: ["gracy.jpg"] 
                 },
                 "abi": { 
                     wish: "Merry Christmas, Abi!", 
-                    quote: "“A brother is a gift to the heart and a friend to the spirit.” Thanks for being the best brother I could ask for!", 
-                    img: "abi.jpg" 
+                    quote: "A brother is a friend to the spirit. Thanks for being the best!", 
+                    imgs: ["abi.jpg"] 
+                },
+                "sibi": {
+                    wish: "Merry Christmas, Sibi Mama!",
+                    quote: "To the IT guru! We're giving you an award for survival: living with Akka and eating her cooking every day! 🤣 Thanks for the tips and being a great friend.",
+                    imgs: ["sibi1.jpg", "sibi2.jpg"]
+                },
+                "mama": {
+                    wish: "Merry Christmas, Sibi Mama!",
+                    quote: "Award for survival: living with Akka and eating her cooking! 🤣 Thanks for being the best mentor and friend.",
+                    imgs: ["sibi1.jpg", "sibi2.jpg"]
+                },
+                "yamuna": {
+                    wish: "Merry Christmas, Yamuna Akka!",
+                    quote: "To our favorite stress-buster! Thank you for being the reason Anni stays happy and for being such a kind human. Loved all the food and memories!",
+                    imgs: ["yamuna1.jpg", "yamuna2.jpg"]
+                },
+                "yamuna akka": {
+                    wish: "Merry Christmas, Yamuna Akka!",
+                    quote: "To our favorite stress-buster! You make everyone around you happy. Thank you for being a good friend to us all.",
+                    imgs: ["yamuna1.jpg", "yamuna2.jpg"]
                 },
                 "james paulraj": {
                     wish: "Merry Christmas, Paulappa!",
-                    quote: "You are literally my second father. Because of you only I studied, and you have always been there for me. I am forever grateful.",
-                    img: "james.jpg"
+                    quote: "You are like a second father to me. Because of you I studied, and you have always been there. Forever grateful.",
+                    imgs: ["james.jpg"]
                 },
                 "clinton": {
                     wish: "Merry Christmas, Clinton Anna!",
-                    quote: "“A great mentor is someone who sees more talent and ability within you than you see in yourself.” Thank you for being the guide of my life and the strength behind my studies. I am truly blessed to have you leading the way for me.",
-                    img: "clinton.jpg"
-                },
-                "anna": { 
-                    wish: "Merry Christmas, Clinton Anna!",
-                    quote: "“A great mentor is someone who sees more talent and ability within you than you see in yourself.” Thank you for being the guide of my life and the strength behind my studies. I am truly blessed to have you leading the way for me.",
-                    img: "clinton.jpg"
+                    quote: "Thank you for being the guide of my life and the strength behind my studies. Truly blessed to have you leading the way.",
+                    imgs: ["clinton.jpg"]
                 },
                 "anni": {
                     wish: "Merry Christmas, Victoria Anni!",
-                    quote: "To 'My Favorite Distraction' and my second mother. Thank you for your love and for always being a beautiful part of my life.",
-                    img: "victoria.jpg"
-                },
-                "victoria": { // Alias for Victoria
-                    wish: "Merry Christmas, Victoria Anni!",
-                    quote: "To 'My Favorite Distraction' and my second mother. Thank you for your love and for always being a beautiful part of my life.",
-                    img: "victoria.jpg"
+                    quote: "To 'My Favorite Distraction' and my second mother. Thank you for your love and for being a beautiful part of my life.",
+                    imgs: ["victoria.jpg"]
                 },
                 "akka": {
                     wish: "Merry Christmas, Shelsiya Akka!",
-                    quote: "To my caring sister and another mother. Thank you for always looking out for me with such a kind heart.",
-                    img: "shelsiya.jpg"
-                },
-                "shelsiya": { // Alias for Shelsiya
-                    wish: "Merry Christmas, Shelsiya Akka!",
-                    quote: "To my caring sister and another mother. Thank you for always looking out for me with such a kind heart.",
-                    img: "shelsiya.jpg"
-                },
-                "pearima": {
-                    wish: "Merry Christmas, Jeya Mary Pearima!",
-                    quote: "Wishing you a Christmas as sweet and warm as you are. You are a blessing to our family.",
-                    img: "jeyamary.jpg"
-                },
-                "jeya mary": { // Alias for Jeya Mary
-                    wish: "Merry Christmas, Jeya Mary Pearima!",
-                    quote: "Wishing you a Christmas as sweet and warm as you are. You are a blessing to our family.",
-                    img: "jeyamary.jpg"
-                },
-                "pearipa": {
-                    wish: "Merry Christmas, Clement Pearipa!",
-                    quote: "Wishing you a peaceful and joyful Christmas. Thank you for everything you do for us.",
-                    img: "clement.jpg"
-                },
-                "clement": { // Alias for Clement
-                    wish: "Merry Christmas, Clement Pearipa!",
-                    quote: "Wishing you a peaceful and joyful Christmas. Thank you for everything you do for us.",
-                    img: "clement.jpg"
+                    quote: "To my caring sister and another mother. Thank you for always looking out for me with a kind heart.",
+                    imgs: ["shelsiya.jpg"]
                 }
             };
 
             if (family[name]) {
                 document.body.classList.add('logged-in');
-                music.play().catch(e => console.log("Music needs interaction first"));
+                document.body.style.background = "radial-gradient(circle, #1a472a 0%, #051a0d 100%)";
+                music.play().catch(e => console.log("Music play blocked by browser"));
                 setInterval(createSnow, 150);
+                
+                let imageHtml = '';
+                family[name].imgs.forEach(src => {
+                    imageHtml += `<img src="${src}" class="surprise-image" onerror="this.src='https://via.placeholder.com/400x300?text=Merry+Christmas'">`;
+                });
                 
                 container.innerHTML = `
                     <div class="surprise-content">
                         <h1 class="wish-title">${family[name].wish}</h1>
-                        <p class="quote-text">${family[name].quote}</p>
-                        <img src="${family[name].img}" class="surprise-image" onerror="this.src='https://via.placeholder.com/400x300?text=Merry+Christmas'">
-                        <br><br>
+                        <p class="quote-text">
+                            ${family[name].quote}
+                            <span class="signature">- by Anis</span>
+                        </p>
+                        ${imageHtml}
+                        <br>
                         <button class="login-btn" style="width:auto; padding: 10px 40px" onclick="location.reload()">Back</button>
                     </div>
                 `;
             } else {
-                alert("Please type a family member's name correctly!");
+                alert("Please type the name correctly!");
             }
         }
 
@@ -231,5 +240,4 @@
         }
     </script>
 </body>
-
 </html>
