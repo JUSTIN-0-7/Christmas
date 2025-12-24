@@ -23,7 +23,6 @@
             transition: background 0.8s ease;
         }
 
-        /* Container for the content */
         .container {
             display: flex;
             align-items: center;
@@ -64,7 +63,6 @@
         .lamp { height: 35vmin; cursor: pointer; margin-bottom: 20px; }
         .lamp__light { opacity: var(--on); transition: opacity 0.4s; }
         
-        /* Snowflakes */
         .snowflake {
             position: fixed; top: -10px; color: white; font-size: 1.2em;
             z-index: 1000; pointer-events: none; animation: fall linear forwards;
@@ -72,7 +70,6 @@
         @keyframes fall { to { transform: translateY(105vh); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Surprise Section */
         .surprise-content { 
             text-align: center; 
             animation: giftReveal 1.2s ease-out; 
@@ -128,17 +125,11 @@
         function toggleLight() {
             lightOn = !lightOn;
             const form = document.getElementById('login-form');
-            
-            // Cycle background color
             colorIndex = (colorIndex + 1) % festiveColors.length;
             document.body.style.background = festiveColors[colorIndex];
-            
             document.documentElement.style.setProperty('--on', lightOn ? 1 : 0);
-            
-            // Visual Cord Pull
             document.getElementById('cord-wire').setAttribute('y2', '375');
             setTimeout(() => document.getElementById('cord-wire').setAttribute('y2', '348'), 150);
-
             lightOn ? form.classList.add('active') : form.classList.remove('active');
         }
 
@@ -188,57 +179,57 @@
                     quote: "Thank you for being the guide of my life and the strength behind my studies. Truly blessed to have you leading the way.",
                     imgs: ["clinton.jpg"]
                 },
-                 "anna": { 
+                "anna": { 
                     wish: "Merry Christmas, Clinton Anna!",
-                    quote: "Thank you for being the guide of my life and the strength behind my studies. Truly blessed to have you leading the way.",
+                    quote: "Thank you for being the guide of my life and the strength behind my studies.",
                     imgs: ["clinton.jpg"]
                 },
-                "victoria": { // Alias for Victoria
+                "victoria": {
                     wish: "Merry Christmas, Victoria Anni!",
-                    quote: "To 'My Favorite Distraction' and my second mother. Thank you for your love and for being a beautiful part of my life.",
+                    quote: "To 'My Favorite Distraction' and my second mother. Thank you for your love.",
                     imgs: ["victoria.jpg"]
                 },
                 "anni": {
                     wish: "Merry Christmas, Victoria Anni!",
-                    quote: "To 'My Favorite Distraction' and my second mother. Thank you for your love and for being a beautiful part of my life.",
+                    quote: "To 'My Favorite Distraction' and my second mother. Thank you for your love.",
                     imgs: ["victoria.jpg"]
                 },
-                   "shelsiya": { // Alias for Shelsiya
+                "shelsiya": { 
                     wish: "Merry Christmas, Shelsiya Akka!",
-                    quote: "To my caring sister and another mother. Thank you for always looking out for me with a kind heart.",
+                    quote: "To my caring sister and another mother. Thank you for always looking out for me.",
                     imgs: ["shelsiya.jpg"]
-                   },   
+                },   
                 "akka": {
                     wish: "Merry Christmas, Shelsiya Akka!",
-                    quote: "To my caring sister and another mother. Thank you for always looking out for me with a kind heart.",
+                    quote: "To my caring sister and another mother.",
                     imgs: ["shelsiya.jpg"]
-                }
+                },
                 "pearima": {
                     wish: "Merry Christmas, Jeya Mary Pearima!",
                     quote: "Wishing you a Christmas as sweet and warm as you are. You are a blessing to our family.",
-                    img: "jeyamary.jpg"
+                    imgs: ["jeyamary.jpg"]
                 },
-                "jeya mary": { // Alias for Jeya Mary
+                "jeya mary": {
                     wish: "Merry Christmas, Jeya Mary Pearima!",
-                    quote: "Wishing you a Christmas as sweet and warm as you are. You are a blessing to our family.",
-                    img: "jeyamary.jpg"
+                    quote: "Wishing you a Christmas as sweet and warm as you are.",
+                    imgs: ["jeyamary.jpg"]
                 },
                 "pearipa": {
                     wish: "Merry Christmas, Clement Pearipa!",
                     quote: "Wishing you a peaceful and joyful Christmas. Thank you for everything you do for us.",
-                    img: "clement.jpg"
+                    imgs: ["clement.jpg"]
                 },
-                "clement": { // Alias for Clement
+                "clement": {
                     wish: "Merry Christmas, Clement Pearipa!",
-                    quote: "Wishing you a peaceful and joyful Christmas. Thank you for everything you do for us.",
-                    img: "clement.jpg"
-        }
+                    quote: "Wishing you a peaceful and joyful Christmas.",
+                    imgs: ["clement.jpg"]
+                }
             };
 
             if (family[name]) {
                 document.body.classList.add('logged-in');
                 document.body.style.background = "radial-gradient(circle, #1a472a 0%, #051a0d 100%)";
-                music.play().catch(e => console.log("Music play blocked by browser"));
+                music.play().catch(e => console.log("Music play blocked"));
                 setInterval(createSnow, 150);
                 
                 let imageHtml = '';
@@ -276,4 +267,3 @@
     </script>
 </body>
 </html>
-
