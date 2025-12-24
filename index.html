@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Family Christmas Surprise 🎄</title>
+    <style>
+        *, *:after, *:before { box-sizing: border-box; }
+
+        :root {
+            --on: 0;
+            --opening: hsl(50, calc((10 + (var(--on, 0) * 80)) * 1%), calc((20 + (var(--on, 0) * 70)) * 1%));
+        }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: #0d1117; 
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            overflow: hidden;
+            transition: background 1.5s ease;
+        }
+
+        /* Festive background after login */
+        body.logged-in {
+            background: radial-gradient(circle, #1a472a 0%, #051a0d 100%);
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .login-form {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 2rem;
+            border-radius: 25px;
+            min-width: 320px;
+            display: none; 
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .login-form.active { display: block; animation: fadeIn 0.8s; }
+
+        .form-group input { 
+            width: 100%; padding: 1rem; border-radius: 12px; border: none; 
+            outline: none; margin-bottom: 1rem; font-size: 1rem; text-align: center;
+        }
+
+        .login-btn {
+            width: 100%; padding: 1rem; border-radius: 12px; border: none;
+            background: #c41e3a; color: white; font-weight: bold; 
+            cursor: pointer; font-size: 1rem; transition: transform 0.2s;
+        }
+        .login-btn:active { transform: scale(0.95); }
+
+        .lamp { height: 40vmin; cursor: pointer; margin-bottom: 20px; }
+        .lamp__light { opacity: var(--on); transition: opacity 0.4s; }
+        
+        /* Snowflakes */
+        .snowflake {
+            position: fixed; top: -10px; color: white; font-size: 1.2em;
+            z-index: 1000; pointer-events: none; animation: fall linear forwards;
+        }
+        @keyframes fall { to { transform: translateY(105vh); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Surprise Section */
+        .surprise-content { text-align: center; animation: giftReveal 1.2s ease-out; color: white; padding: 20px; }
+        .wish-title { font-size: 2.2rem; margin-bottom: 10px; color: #fff; text-shadow: 0 0 15px #c41e3a; font-family: 'Georgia', serif; }
+        .quote-text { font-style: italic; font-size: 1.1rem; margin-bottom: 25px; color: #eee; max-width: 500px; line-height: 1.6; margin-left: auto; margin-right: auto; }
+        .surprise-image {
+            max-width: 95%; max-height: 45vh; border: 8px solid white;
+            border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+        @keyframes giftReveal { 0% { opacity: 0; scale: 0.8; } 100% { opacity: 1; scale: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="main-container">
+        <svg class="lamp" id="lamp-svg" viewBox="0 0 333 484" fill="none" onclick="toggleLight()">
+            <ellipse fill="var(--opening)" cx="165" cy="220" rx="130" ry="20" />
+            <path fill="#222" d="M165 464c44.183 0 80-8.954 80-20v-14H85v14c0 11.046 35.817 20 80 20z" />
+            <ellipse fill="#333" cx="165" cy="430" rx="80" ry="20" />
+            <path fill="#444" d="M180 142h-30v286c0 3.866 6.716 7 15 7s15-3.134 15-7V142z" />
+            <line id="cord-wire" x1="124" y1="190" x2="124" y2="348" stroke="white" stroke-width="6" stroke-linecap="round" />
+            <circle cx="124" cy="355" r="10" fill="#c41e3a" />
+            <path class="lamp__light" d="M290.5 193H39L0 463.5c0 11.046 75.478 20 165.5 20s167-11.954 167-23l-42-267.5z" fill="rgba(255, 255, 180, 0.15)" />
+            <path fill="#111" d="M164.859 0c55.229 0 100 8.954 100 20l29.859 199.06C291.529 208.451 234.609 200 164.859 200S38.189 208.451 35 219.06L64.859 20c0-11.046 44.772-20 100-20z" />
+        </svg>
+
+        <div class="login-form" id="login-form">
+            <h2 style="margin-top:0;">Welcome</h2>
+            <div class="form-group">
+                <input type="text" id="username" placeholder="Type your name...">
+            </div>
+            <button class="login-btn" onclick="revealGift()">See the Surprise</button>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop><source src="your-music.mp3" type="audio/mpeg"></audio>
+
+    <script>
+        let lightOn = false;
+
+        function toggleLight() {
+            lightOn = !lightOn;
+            const form = document.getElementById('login-form');
+            document.documentElement.style.setProperty('--on', lightOn ? 1 : 0);
+            
+            // Visual Cord Pull
+            document.getElementById('cord-wire').setAttribute('y2', '375');
+            setTimeout(() => document.getElementById('cord-wire').setAttribute('y2', '348'), 150);
+
+            lightOn ? form.classList.add('active') : form.classList.remove('active');
+        }
+
+        function revealGift() {
+            const name = document.getElementById('username').value.toLowerCase().trim();
+            const container = document.getElementById('main-container');
+            const music = document.getElementById('bg-music');
+            
+            // --- ALL FAMILY DATA ---
+            const family = {
+                "gracy": { 
+                    wish: "Merry Christmas, Mom!", 
+                    quote: "“A mother’s love is the heart of every Christmas.” Thank you for being my everything and our constant guide.", 
+                    img: "gracy.jpg" 
+                },
+                "abi": { 
+                    wish: "Merry Christmas, Abi!", 
+                    quote: "“A brother is a gift to the heart and a friend to the spirit.” Thanks for being the best brother I could ask for!", 
+                    img: "abi.jpg" 
+                },
+                "james paulraj": {
+                    wish: "Merry Christmas, James Peripa!",
+                    quote: "You are literally my second father. Because of you only I studied, and you have always been there for me. I am forever grateful.",
+                    img: "james.jpg"
+                },
+                "clinton": {
+                    wish: "Merry Christmas, Clinton Anna!",
+                    quote: "“A great mentor is someone who sees more talent and ability within you than you see in yourself.” Thank you for being the guide of my life and the strength behind my studies. I am truly blessed to have you leading the way for me.",
+                    img: "clinton.jpg"
+                },
+                "anna": { 
+                    wish: "Merry Christmas, Clinton Anna!",
+                    quote: "“A great mentor is someone who sees more talent and ability within you than you see in yourself.” Thank you for being the guide of my life and the strength behind my studies. I am truly blessed to have you leading the way for me.",
+                    img: "clinton.jpg"
+                },
+                "anni": {
+                    wish: "Merry Christmas, Victoria Anni!",
+                    quote: "To 'My Favorite Distraction' and my second mother. Thank you for your love and for always being a beautiful part of my life.",
+                    img: "victoria.jpg"
+                },
+                "victoria": { // Alias for Victoria
+                    wish: "Merry Christmas, Victoria Anni!",
+                    quote: "To 'My Favorite Distraction' and my second mother. Thank you for your love and for always being a beautiful part of my life.",
+                    img: "victoria.jpg"
+                },
+                "akka": {
+                    wish: "Merry Christmas, Shelsiya Akka!",
+                    quote: "To my caring sister and another mother. Thank you for always looking out for me with such a kind heart.",
+                    img: "shelsiya.jpg"
+                },
+                "shelsiya": { // Alias for Shelsiya
+                    wish: "Merry Christmas, Shelsiya Akka!",
+                    quote: "To my caring sister and another mother. Thank you for always looking out for me with such a kind heart.",
+                    img: "shelsiya.jpg"
+                },
+                "pearima": {
+                    wish: "Merry Christmas, Jeya Mary Pearima!",
+                    quote: "Wishing you a Christmas as sweet and warm as you are. You are a blessing to our family.",
+                    img: "jeyamary.jpg"
+                },
+                "jeya mary": { // Alias for Jeya Mary
+                    wish: "Merry Christmas, Jeya Mary Pearima!",
+                    quote: "Wishing you a Christmas as sweet and warm as you are. You are a blessing to our family.",
+                    img: "jeyamary.jpg"
+                },
+                "pearipa": {
+                    wish: "Merry Christmas, Clement Pearipa!",
+                    quote: "Wishing you a peaceful and joyful Christmas. Thank you for everything you do for us.",
+                    img: "clement.jpg"
+                },
+                "clement": { // Alias for Clement
+                    wish: "Merry Christmas, Clement Pearipa!",
+                    quote: "Wishing you a peaceful and joyful Christmas. Thank you for everything you do for us.",
+                    img: "clement.jpg"
+                }
+            };
+
+            if (family[name]) {
+                document.body.classList.add('logged-in');
+                music.play().catch(e => console.log("Music needs interaction first"));
+                setInterval(createSnow, 150);
+                
+                container.innerHTML = `
+                    <div class="surprise-content">
+                        <h1 class="wish-title">${family[name].wish}</h1>
+                        <p class="quote-text">${family[name].quote}</p>
+                        <img src="${family[name].img}" class="surprise-image" onerror="this.src='https://via.placeholder.com/400x300?text=Merry+Christmas'">
+                        <br><br>
+                        <button class="login-btn" style="width:auto; padding: 10px 40px" onclick="location.reload()">Back</button>
+                    </div>
+                `;
+            } else {
+                alert("Please type a family member's name correctly!");
+            }
+        }
+
+        function createSnow() {
+            const snow = document.createElement('div');
+            snow.innerHTML = '❄';
+            snow.className = 'snowflake';
+            snow.style.left = Math.random() * 100 + 'vw';
+            snow.style.animationDuration = Math.random() * 3 + 2 + 's';
+            snow.style.opacity = Math.random();
+            document.body.appendChild(snow);
+            setTimeout(() => snow.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
